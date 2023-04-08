@@ -22,6 +22,28 @@ int findWays(vector<int> &num, int tar)
     vector<vector<int>>dp(n,vector<int>(tar+1,-1));
     return f(n-1,tar,num,dp);
     // Write your code here.
+    //TABULATION APPROACH TO THE CODE IN HERE
+     for(int i=0; i<n; i++){
+        dp[i][0] = 1;
+    }
+    
+    if(num[0]<=k)
+        dp[0][num[0]] = 1;//BASE CASE 
+    
+    for(int ind = 1; ind<n; ind++){
+        for(int target= 1; target<=k; target++){
+            //NESTED LOOP FOR THE PARAMETERS IN THE OPPOSITE FLOW OF RECURANCE 
+            int notTaken = dp[ind-1][target];
+    
+            int taken = 0;
+                if(num[ind]<=target)
+                    taken = dp[ind-1][target-num[ind]];
+        
+            dp[ind][target]= notTaken + taken;//COPY THE RECURANCE 
+        }
+    }
+    
+    return dp[n-1][k];
 }
 TC IS O(N*SUM) SC IS O(N*SUM) FOR DP+O(N) FOR RECURSSIVE STACK SPACE  
 https://www.codingninjas.com/codestudio/problems/number-of-subsets_3952532?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos
